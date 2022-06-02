@@ -1,0 +1,28 @@
+FROM ubuntu:18.04
+ARG DEBIAN_FRONTEND=noninteractive
+
+COPY common.sh lib.sh /
+RUN /common.sh
+
+COPY cmake.sh /
+RUN /cmake.sh
+
+COPY xargo.sh /
+RUN /xargo.sh
+
+COPY crosstool-ng.sh /
+COPY crosstool-config/aarch64_be-unknown-linux-gnu-crosstool.config /
+RUN /crosstool-ng.sh aarch64_be-unknown-linux-gnu-crosstool.config 5
+
+ENV PATH /x-tools/aarch64_be-unknown-linux-gnu/bin/:$PATH
+
+COPY qemu.sh /
+RUN /qemu.sh aarch64_be
+
+ENV CARGO_TARGET_AARCH64_BE_UNKNOWN_LINUX_GNU_LINKER=aarch64_be-unknown-linux-gnu-gcc \
+    CARGO_TARGET_AARCH64_BE_UNKNOWN_LINUX_GNU_RUNNER=qemu-aarch64_be \
+    CC_aarch64_be_unknown_linux_gnu=aarch64_be-unknown-linux-gnu-gcc \
+    CXX_aarch64_be_unknown_linux_gnu=aarch64_be-unknown-linux-gnu-g++ \
+    BINDGEN_EXTRA_CLANG_ARGS_aarch64_be_unknown_linux_gnu="--sysroot=/x-tools/aarch64_be-unknown-linux-gnu/aarch64_be-unknown-linux-gnu/sysroot/" \
+    QEMU_LD_PREFIX=/x-tools/aarch64_be-unknown-linux-gnu/aarch64_be-unknown-linux-gnu/sysroot/ \
+    RUST_TEST_THREADS=1
