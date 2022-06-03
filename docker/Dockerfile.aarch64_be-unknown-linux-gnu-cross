@@ -11,8 +11,8 @@ COPY xargo.sh /
 RUN /xargo.sh
 
 COPY crosstool-ng.sh /
-COPY crosstool-config/aarch64_be-unknown-linux-gnu-crosstool.config /
-RUN /crosstool-ng.sh aarch64_be-unknown-linux-gnu-crosstool.config 5
+COPY crosstool-config/aarch64_be-unknown-linux-gnu-cross.config /
+RUN /crosstool-ng.sh aarch64_be-unknown-linux-gnu-cross.config 5
 
 ENV PATH /x-tools/aarch64_be-unknown-linux-gnu/bin/:$PATH
 

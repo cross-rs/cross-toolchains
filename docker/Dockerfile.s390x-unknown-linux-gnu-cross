@@ -11,8 +11,8 @@ COPY xargo.sh /
 RUN /xargo.sh
 
 COPY crosstool-ng.sh /
-COPY crosstool-config/s390x-unknown-linux-gnu-crosstool.config /
-RUN /crosstool-ng.sh s390x-unknown-linux-gnu-crosstool.config 5
+COPY crosstool-config/s390x-unknown-linux-gnu-cross.config /
+RUN /crosstool-ng.sh s390x-unknown-linux-gnu-cross.config 5
 
 ENV PATH /x-tools/s390x-ibm-linux-gnu/bin/:$PATH
 

@@ -1,4 +1,4 @@
-# `crosstool-toolchains`
+# `cross-toolchains`
 
 Additional Dockerfiles and crosstool-ng config files to build images for additional targets. These enable the use of additional targets, and different glibc or GCC versions.
 
@@ -26,22 +26,24 @@ The config files are configured via [crosstool-ng/configure-all.sh](/crosstool-n
 
 The image names don't map identically to the target names, to avoid conflicting with those provided in the [cross](https://github.com/cross-rs/cross) repository. This table maps the target names to the image names:
 
-| Target Name                     | Image Name                              |
-|:-------------------------------:|:---------------------------------------:|
-| aarch64_be-unknown-linux-gnu    | aarch64_be-unknown-linux-gnu-crosstool  |
-| s390x-unknown-linux-gnu         | s390x-unknown-linux-gnu-crosstool       |
+| Target Name                           | Image Name                                  |
+|:-------------------------------------:|:-------------------------------------------:|
+| aarch64_be-unknown-linux-gnu          | aarch64_be-unknown-linux-gnu-cross          |
+| s390x-unknown-linux-gnu               | s390x-unknown-linux-gnu-cross               |
+| thumbv7neon-unknown-linux-musleabihf  | thumbv7neon-unknown-linux-musleabihf-cross  |
+| x86_64-unknown-dragonfly              | x86_64-unknown-dragonfly-cross              |
 
 For example, to build and run an image, you would configure the image with:
 
 ```bash
-./build-docker-image.sh s390x-unknown-linux-gnu-crosstool
+./build-docker-image.sh s390x-unknown-linux-gnu-cross
 ```
 
 And then update `Cross.toml` in your crate to specify the target:
 
 ```toml
 [target.s390x-unknown-linux-gnu]
-image = "ghcr.io/cross-rs/s390x-unknown-linux-gnu-crosstool:local"
+image = "ghcr.io/cross-rs/s390x-unknown-linux-gnu-cross:local"
 ```
 
 Additional config files for any [supported platforms](https://doc.rust-lang.org/rustc/platform-support.html) are appreciated.
