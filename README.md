@@ -2,12 +2,12 @@
 
 Additional Dockerfiles and crosstool-ng config files to build images for additional targets. These enable the use of additional targets, and different glibc or GCC versions.
 
-First, download both [cross](https://github.com/cross-rs/cross) and [crosstool-toolchains](https://github.com/cross-rs/crosstool-toolchains) as zip files and unzip them to the same directory.
+First, clone [cross](https://github.com/cross-rs/cross) and update the submodules.
 
 ```bash
 git clone https://github.com/cross-rs/cross
 cd cross
-crosstool-ng/initialize-ext.sh
+git submodule update --init
 ```
 
 Then, you can build your images as shown in [Targets](#targets).
@@ -31,12 +31,11 @@ The image names don't map identically to the target names, to avoid conflicting 
 | aarch64_be-unknown-linux-gnu          | aarch64_be-unknown-linux-gnu-cross          |
 | s390x-unknown-linux-gnu               | s390x-unknown-linux-gnu-cross               |
 | thumbv7neon-unknown-linux-musleabihf  | thumbv7neon-unknown-linux-musleabihf-cross  |
-| x86_64-unknown-dragonfly              | x86_64-unknown-dragonfly-cross              |
 
 For example, to build and run an image, you would configure the image with:
 
 ```bash
-./build-docker-image.sh s390x-unknown-linux-gnu-cross
+cargo build-docker-image s390x-unknown-linux-gnu-cross --tag local
 ```
 
 And then update `Cross.toml` in your crate to specify the target:
@@ -46,7 +45,7 @@ And then update `Cross.toml` in your crate to specify the target:
 image = "ghcr.io/cross-rs/s390x-unknown-linux-gnu-cross:local"
 ```
 
-Additional config files for any [supported platforms](https://doc.rust-lang.org/rustc/platform-support.html) are appreciated.
+Additional config files for any [supported platforms](https://doc.rust-lang.org/rustc/platform-support.html) are appreciated. Please note that many of these images are tier 3 targets, and do not have pre-built versions of the standard library. You must provide the `build-std` [config](https://github.com/cross-rs/cross/wiki/Configuration) option when building crates requiring `std` support.
 
 ## Known Issues
 
