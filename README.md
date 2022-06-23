@@ -60,9 +60,9 @@ Due to licensing [reasons](https://www.apple.com/legal/sla/docs/xcode.pdf), we c
 You can provide either a download URL or a path to a local file when building:
 
 ```bash
-$ cargo build-docker-image i686-apple-darwin \
+$ cargo build-docker-image i686-apple-darwin-cross \
   --build-arg 'MACOS_SDK_URL=$URL'
-$ cargo build-docker-image i686-apple-darwin \
+$ cargo build-docker-image i686-apple-darwin-cross \
   --build-arg 'MACOS_SDK_DIR=$DIR' \
   --build-arg 'MACOS_SDK_FILE=$FILE'
 ```
