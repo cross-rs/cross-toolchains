@@ -1,0 +1,34 @@
+FROM ubuntu:20.04
+ARG DEBIAN_FRONTEND=noninteractive
+
+COPY common.sh lib.sh /
+RUN /common.sh
+
+COPY cmake.sh /
+RUN /cmake.sh
+
+COPY xargo.sh /
+RUN /xargo.sh
+
+# `MACOS_SDK_URL` or `MACOS_SDK_FILE` must be provided. `MACOS_SDK_FILE`
+# is the filename, while `MACOS_SDK_DIR` is the path relative to the current
+# build context. We will copy the filename from the root directory to
+# osxcross.
+ARG MACOS_SDK_DIR="."
+ARG MACOS_SDK_FILE="nonexistent"
+ARG MACOS_SDK_URL
+# wildcard workaround so we can copy the file only if it exists
+COPY $MACOS_SDK_DIR/$MACOS_SDK_FILE* /
+COPY cross-toolchains/docker/darwin.sh /
+RUN /darwin.sh
+
+ENV PATH=$PATH:/opt/osxcross/bin
+
+# by default, older versions of macOS (<10.9) link to libstdc++,
+# but rust expects it to link to libc++.
+ENV CARGO_TARGET_I686_APPLE_DARWIN_LINKER=i386-apple-darwin14-clang \
+    AR_i686_apple_darwin=i386-apple-darwin14-ar \
+    CFLAGS_i686_apple_darwin="-stdlib=libc++" \
+    CXXFLAGS_i686_apple_darwin="-stdlib=libc++" \
+    CC_i686_apple_darwin=i386-apple-darwin14-clang \
+    CXX_i686_apple_darwin=i386-apple-darwin14-clang++
