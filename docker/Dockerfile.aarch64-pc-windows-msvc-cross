@@ -17,12 +17,22 @@ RUN /msvc-wine.sh
 COPY wine.sh /
 RUN /wine.sh
 
+# need windows-style perl for paths
+COPY cross-toolchains/docker/perl.sh /
+RUN /perl.sh
+
+ARG ARCH=arm64
 COPY cross-toolchains/docker/msvc-wine-symlink.sh /
-RUN /msvc-wine-symlink.sh arm64
+RUN /msvc-wine-symlink.sh $ARCH
 
 COPY cross-toolchains/docker/msvc-windows-entry.sh /
 ENTRYPOINT ["/msvc-windows-entry.sh"]
 
 ENV CARGO_TARGET_AARCH64_PC_WINDOWS_MSVC_LINKER=link.exe \
     CC_aarch64_pc_windows_msvc=cl.exe \
-    CXX_aarch64_pc_windows_msvc=cl.exe
+    CXX_aarch64_pc_windows_msvc=cl.exe \
+    PATH=/opt/msvc/bin/$ARCH:/opt/bin:$PATH \
+    WINEPATH="$WINEPATH;C:/windows/syswow64;C:/windows/system32;/opt/msvc/bin/$ARCH" \
+    VSINSTALLDIR="/opt/msvc" \
+    VCINSTALLDIR="/opt/msvc/vc" \
+    VSCMD_ARG_TGT_ARCH=$ARCH
