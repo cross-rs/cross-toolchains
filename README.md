@@ -28,9 +28,13 @@ The image names don't map identically to the target names, to avoid conflicting 
 
 | Target Name                           | Image Name                                  |
 |:-------------------------------------:|:-------------------------------------------:|
+| aarch64-pc-windows-msvc               | aarch64-pc-windows-msvc-cross               |
 | aarch64_be-unknown-linux-gnu          | aarch64_be-unknown-linux-gnu-cross          |
+| i686-pc-windows-msvc                  | i686-pc-windows-msvc-cross                  |
 | s390x-unknown-linux-gnu               | s390x-unknown-linux-gnu-cross               |
+| thumbv7a-pc-windows-msvc              | thumbv7a-pc-windows-msvc-cross              |
 | thumbv7neon-unknown-linux-musleabihf  | thumbv7neon-unknown-linux-musleabihf-cross  |
+| x86_64-pc-windows-msvc                | x86_64-pc-windows-msvc-cross                |
 
 For example, to build and run an image, you would configure the image with:
 

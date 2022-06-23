@@ -1,0 +1,28 @@
+FROM ubuntu:20.04
+ARG DEBIAN_FRONTEND=noninteractive
+
+COPY common.sh lib.sh /
+RUN /common.sh
+
+COPY cmake.sh /
+RUN /cmake.sh
+
+COPY xargo.sh /
+RUN /xargo.sh
+
+# run these in separate steps, so we can cache MSVC between all images.
+COPY cross-toolchains/docker/msvc-wine.sh /
+RUN /msvc-wine.sh
+
+COPY wine.sh /
+RUN /wine.sh
+
+COPY cross-toolchains/docker/msvc-wine-symlink.sh /
+RUN /msvc-wine-symlink.sh arm64
+
+COPY cross-toolchains/docker/msvc-windows-entry.sh /
+ENTRYPOINT ["/msvc-windows-entry.sh"]
+
+ENV CARGO_TARGET_AARCH64_PC_WINDOWS_MSVC_LINKER=link.exe \
+    CC_aarch64_pc_windows_msvc=cl.exe \
+    CXX_aarch64_pc_windows_msvc=cl.exe
