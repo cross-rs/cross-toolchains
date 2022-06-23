@@ -30,10 +30,12 @@ The image names don't map identically to the target names, to avoid conflicting 
 |:-------------------------------------:|:-------------------------------------------:|
 | aarch64-pc-windows-msvc               | aarch64-pc-windows-msvc-cross               |
 | aarch64_be-unknown-linux-gnu          | aarch64_be-unknown-linux-gnu-cross          |
+| i686-apple-darwin                     | i686-apple-darwin-cross                     |
 | i686-pc-windows-msvc                  | i686-pc-windows-msvc-cross                  |
 | s390x-unknown-linux-gnu               | s390x-unknown-linux-gnu-cross               |
 | thumbv7a-pc-windows-msvc              | thumbv7a-pc-windows-msvc-cross              |
 | thumbv7neon-unknown-linux-musleabihf  | thumbv7neon-unknown-linux-musleabihf-cross  |
+| x86_64-apple-darwin                   | x86_64-apple-darwin-cross                   |
 | x86_64-pc-windows-msvc                | x86_64-pc-windows-msvc-cross                |
 
 For example, to build and run an image, you would configure the image with:
@@ -51,11 +53,28 @@ image = "ghcr.io/cross-rs/s390x-unknown-linux-gnu-cross:local"
 
 Additional config files for any [supported platforms](https://doc.rust-lang.org/rustc/platform-support.html) are appreciated. Please note that many of these images are tier 3 targets, and do not have pre-built versions of the standard library. You must provide the `build-std` [config](https://github.com/cross-rs/cross/wiki/Configuration) option when building crates requiring `std` support.
 
+# Apple Targets
+
+Due to licensing [reasons](https://www.apple.com/legal/sla/docs/xcode.pdf), we cannot provide images of `*-apple-darwin` targets, nor host the macOS SDK. osxcross has instructions for how to package the [sdk](https://github.com/tpoechtrager/osxcross#packaging-the-sdk), which you can then provide to the Docker image as either a local file or download link. Pre-packaged tarballs can also be found online, however, for legal reasons, we do not provide links here.
+
+You can provide either a download URL or a path to a local file when building:
+
+```bash
+$ cargo build-docker-image i686-apple-darwin \
+  --build-arg 'MACOS_SDK_URL=$URL'
+$ cargo build-docker-image i686-apple-darwin \
+  --build-arg 'MACOS_SDK_DIR=$DIR' \
+  --build-arg 'MACOS_SDK_FILE=$FILE'
+```
+
+If not provided, `MACOS_SDK_DIR` defaults to the build context of the Dockerfile. Note that this file must be a subdirectory of the build context.
+
 ## Known Issues
 
 - Older toolchains, such as GCC v4.9.4, do not work with the hardcoded ISL v0.20.
 - s390x toolchains cannot be built with glibc below v2.20, due to missing symbols in `nptl/sysdeps/s390/tls.h`.
 - aarch64_be toolchains cannot be built with older glibc versions, due relocations (tested to work in v2.31, failed in v2.20).
+- MSVC targets may fail with more complex build systems, such as OpenSSL.
 
 ## Code of Conduct
 
