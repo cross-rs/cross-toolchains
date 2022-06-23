@@ -7,7 +7,7 @@ First, clone [cross](https://github.com/cross-rs/cross) and update the submodule
 ```bash
 git clone https://github.com/cross-rs/cross
 cd cross
-git submodule update --init
+git submodule update --init --remote
 ```
 
 Then, you can build your images as shown in [Targets](#targets).
