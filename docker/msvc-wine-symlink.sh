@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2016
 
 set -x
 set -euo pipefail
@@ -6,17 +7,15 @@ set -euo pipefail
 main() {
     local arch="${1}"
 
-    # need to create scripts to speed up compilation, since binfmt is slow
-    # the use of wine64 is also super slow, so we want our own wrappers.
-    local src="/opt/msvc/bin/${arch}"
-    local dst="/usr/local/bin"
-    local srcf
-    local dstf
-    for srcf in "$src"/*.exe; do
-        dstf=$(basename "${srcf}")
-        echo -e '#!/usr/bin/env bash\nwine '"${srcf}"' "${@}"' > "${dst}/${dstf}"
-        chmod +x "${dst}/${dstf}"
-    done
+    # speed up scripts by specifying wine instead of wine64
+    local prefix="/opt/msvc/bin/${arch}"
+    sed -i 's/wine64/wine/g' "${prefix}/wine-msvc.sh"
+
+    # need to specifically fix cmd, so it uses windows cmd.
+    echo -e '#!/usr/bin/env bash\nwine cmd "${@}"' > "${prefix}/cmd"
+    echo -e '#!/usr/bin/env bash\nwine cmd "${@}"' > "${prefix}/cmd.exe"
+    chmod +x "${prefix}/cmd"
+    chmod +x "${prefix}/cmd.exe"
 
     rm "${0}"
 }
