@@ -19,7 +19,8 @@ main() {
         g++ \
         make \
         patch \
-        xz-utils
+        xz-utils \
+        python
 
     apt-get update
     apt-get install --assume-yes --no-install-recommends clang \
