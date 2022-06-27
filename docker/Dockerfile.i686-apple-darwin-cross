@@ -22,13 +22,13 @@ COPY $MACOS_SDK_DIR/$MACOS_SDK_FILE* /
 COPY cross-toolchains/docker/darwin.sh /
 RUN /darwin.sh
 
-ENV PATH=$PATH:/opt/osxcross/bin
+ENV PATH=$PATH:/opt/osxcross/bin \
+    CROSS_TARGET=i686-apple-darwin
+
+COPY cross-toolchains/docker/darwin-entry.sh /
+ENTRYPOINT ["/darwin-entry.sh"]
 
 # by default, older versions of macOS (<10.9) link to libstdc++,
 # but rust expects it to link to libc++.
-ENV CARGO_TARGET_I686_APPLE_DARWIN_LINKER=i386-apple-darwin14-clang \
-    AR_i686_apple_darwin=i386-apple-darwin14-ar \
-    CFLAGS_i686_apple_darwin="-stdlib=libc++" \
-    CXXFLAGS_i686_apple_darwin="-stdlib=libc++" \
-    CC_i686_apple_darwin=i386-apple-darwin14-clang \
-    CXX_i686_apple_darwin=i386-apple-darwin14-clang++
+ENV CFLAGS_i686_apple_darwin="-stdlib=libc++" \
+    CXXFLAGS_i686_apple_darwin="-stdlib=libc++"
