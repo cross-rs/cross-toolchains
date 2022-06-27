@@ -26,9 +26,9 @@ ENV PATH=$PATH:/opt/osxcross/bin
 ARG TOOLING_VERSIONS='20.4'
 # by default, older versions of macOS (<10.9) link to libstdc++,
 # but rust expects it to link to libc++.
-ENV CARGO_TARGET_X86_64_APPLE_DARWIN_LINKER=x86_64-apple-darwin$TOOLING_VERSIONS-clang \
-    AR_x86_64_apple_darwin=x86_64-apple-darwin$TOOLING_VERSIONS-ar \
-    CFLAGS_x86_64_apple_darwin="-stdlib=libc++" \
-    CXXFLAGS_x86_64_apple_darwin="-stdlib=libc++" \
-    CC_x86_64_apple_darwin=x86_64-apple-darwin$TOOLING_VERSIONS-clang \
-    CXX_x86_64_apple_darwin=x86_64-apple-darwin$TOOLING_VERSIONS-clang++
+ENV CARGO_TARGET_AARCH64_APPLE_DARWIN_LINKER=aarch64-apple-darwin$TOOLING_VERSIONS-clang \
+    AR_aarch64_apple_darwin=aarch64-apple-darwin$TOOLING_VERSIONS-ar \
+    CFLAGS_aarch64_apple_darwin="-stdlib=libc++" \
+    CXXFLAGS_aarch64_apple_darwin="-stdlib=libc++" \
+    CC_aarch64_apple_darwin=aarch64-apple-darwin$TOOLING_VERSIONS-clang \
+    CXX_aarch64_apple_darwin=aarch64-apple-darwin$TOOLING_VERSIONS-clang++
