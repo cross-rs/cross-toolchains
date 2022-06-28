@@ -28,6 +28,7 @@ The image names don't map identically to the target names, to avoid conflicting 
 
 | Target Name                           | Image Name                                  |
 |:-------------------------------------:|:-------------------------------------------:|
+| aarch64-apple-ios                     | aarch64-apple-ios-cross                     |
 | aarch64-pc-windows-msvc               | aarch64-pc-windows-msvc-cross               |
 | aarch64_be-unknown-linux-gnu          | aarch64_be-unknown-linux-gnu-cross          |
 | i686-apple-darwin                     | i686-apple-darwin-cross                     |
@@ -57,6 +58,8 @@ Additional config files for any [supported platforms](https://doc.rust-lang.org/
 
 Due to licensing [reasons](https://www.apple.com/legal/sla/docs/xcode.pdf), we cannot provide images of `*-apple-darwin` targets, nor host the macOS SDK. osxcross has instructions for how to package the [sdk](https://github.com/tpoechtrager/osxcross#packaging-the-sdk), which you can then provide to the Docker image as either a local file or download link. Pre-packaged tarballs can also be found online, however, for legal reasons, we do not provide links here.
 
+### Darwin Targets
+
 You can provide either a download URL or a path to a local file when building:
 
 ```bash
@@ -69,12 +72,38 @@ $ cargo build-docker-image i686-apple-darwin-cross \
 
 If not provided, `MACOS_SDK_DIR` defaults to the build context of the Dockerfile. Note that this file must be a subdirectory of the build context.
 
+Supported targets by SDK version (at least 10.7+):
+- `i686-apple-darwin`: SDK <= 10.13
+- `x86_64-apple-darwin`: any SDK version
+- `aarc64-apple-darwin`: SDK >= 10.16
+
+### iOS Targets
+
+You can provide either a download URL or a path to a local file when building:
+
+```bash
+$ cargo build-docker-image aarch64-apple-ios-cross \
+  --build-arg 'IOS_SDK_URL=$URL'
+$ cargo build-docker-image aarch64-apple-ios-cross \
+  --build-arg 'IOS_SDK_DIR=$DIR' \
+  --build-arg 'IOS_SDK_FILE=$FILE'
+```
+
+If not provided, `IOS_SDK_DIR` defaults to the build context of the Dockerfile. Note that this file must be a subdirectory of the build context.
+
+Supported targets by SDK version (at least 9.3+):
+- `aarc64-apple-ios`: any SDK version
+- `armv7-apple-ios`: not supported
+- `armv7s-apple-ios`: not supported
+- `i686-apple-ios`: not supported
+- `x86_64-apple-ios`: not supported
+
 ## Known Issues
 
 - Older toolchains, such as GCC v4.9.4, do not work with the hardcoded ISL v0.20.
 - s390x toolchains cannot be built with glibc below v2.20, due to missing symbols in `nptl/sysdeps/s390/tls.h`.
 - aarch64_be toolchains cannot be built with older glibc versions, due relocations (tested to work in v2.31, failed in v2.20).
-- MSVC targets may fail with more complex build systems, such as OpenSSL.
+- MSVC and iOS targets may fail with more complex build systems, such as OpenSSL. macOS targets have no issues.
 
 ## Code of Conduct
 
