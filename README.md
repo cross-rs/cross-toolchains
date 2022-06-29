@@ -16,11 +16,20 @@ Then, you can build your images as shown in [Targets](#targets).
 
 ## Configure
 
-The config files are configured via [crosstool-ng/configure-all.sh](/crosstool-ng/configure-all.sh), which may be customized by the following environment variables:
+The config files are configured via `cargo xtask configure-crosstool`, which may be customized by the following flags/environment variables:
 
-- `GCC_VERSION`: The GCC version (default `8.3.0`)
-- `GLIBC_VERSION`: The glibc version (default `2.17`)
-- `LINUX_VERSION`: The Linux version (default `4.19.21`)
+- `--gcc-version`, `GCC_VERSION`: The GCC version (default `8.3.0`)
+- `--glibc-version`, `GLIBC_VERSION`: The glibc version (default `2.17`)
+- `--linux-version`, `LINUX_VERSION`: The Linux version (default `4.19.21`)
+
+If no targets are provided, all crosstool images will be configured, otherwise, only the selected targets will be built. For example:
+
+```bash
+# only configure the config file for a single target
+$ cargo xtask configure-crosstool arm-unknown-linux-gnueabihf
+# configure all config files for crosstool images
+$ cargo xtask configure-crosstool
+```
 
 ## Targets
 
