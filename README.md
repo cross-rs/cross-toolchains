@@ -37,6 +37,7 @@ The image names don't map identically to the target names, to avoid conflicting 
 
 | Target Name                           | Image Name                                  |
 |:-------------------------------------:|:-------------------------------------------:|
+| aarch64-apple-darwin                  | aarch64-apple-darwin-cross                  |
 | aarch64-apple-ios                     | aarch64-apple-ios-cross                     |
 | aarch64-pc-windows-msvc               | aarch64-pc-windows-msvc-cross               |
 | aarch64_be-unknown-linux-gnu          | aarch64_be-unknown-linux-gnu-cross          |
@@ -101,7 +102,7 @@ $ cargo build-docker-image aarch64-apple-ios-cross \
 If not provided, `IOS_SDK_DIR` defaults to the build context of the Dockerfile. Note that this file must be a subdirectory of the build context.
 
 Supported targets by SDK version (at least 9.3+):
-- `aarc64-apple-ios`: any SDK version
+- `aarch64-apple-ios`: any SDK version
 - `armv7-apple-ios`: not supported
 - `armv7s-apple-ios`: not supported
 - `i686-apple-ios`: not supported

@@ -17,7 +17,6 @@ RUN /xargo.sh
 ARG MACOS_SDK_DIR="."
 ARG MACOS_SDK_FILE="nonexistent"
 ARG MACOS_SDK_URL
-ARG TARGET_CPU=aarch64
 # wildcard workaround so we can copy the file only if it exists
 COPY $MACOS_SDK_DIR/$MACOS_SDK_FILE* /
 COPY cross-toolchains/docker/darwin.sh /
