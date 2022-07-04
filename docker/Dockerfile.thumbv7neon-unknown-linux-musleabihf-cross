@@ -21,14 +21,15 @@ RUN /musl.sh \
                       --with-mode=thumb \
                       --with-fpu=vfp"
 
-# Allows qemu run dynamic linked binaries
-RUN ln -sf \
-    /usr/local/arm-linux-musleabihf/lib/libc.so \
-    /usr/local/arm-linux-musleabihf/lib/ld-musl-armhf.so.1
+ENV CROSS_MUSL_SYSROOT=/usr/arm-linux-musleabihf
+COPY musl-symlink.sh /
+RUN /musl-symlink.sh $CROSS_MUSL_SYSROOT armhf
+
+COPY qemu-runner /
 
 # Export all target binutils just in case required.
 ENV CARGO_TARGET_THUMBV7NEON_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-musleabihf-gcc \
-    CARGO_TARGET_THUMBV7NEON_UNKNOWN_LINUX_MUSLEABIHF_RUNNER="/linux-runner armv7" \
+    CARGO_TARGET_THUMBV7NEON_UNKNOWN_LINUX_MUSLEABIHF_RUNNER="/qemu-runner armv7" \
     AR_thumbv7neon_unknown_linux_musleabihf=arm-linux-musleabihf-ar \
     AS_thumbv7neon_unknown_linux_musleabihf=arm-linux-musleabihf-as \
     CC_thumbv7neon_unknown_linux_musleabihf=arm-linux-musleabihf-gcc \
@@ -42,6 +43,6 @@ ENV CARGO_TARGET_THUMBV7NEON_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-musleabih
     SIZE_thumbv7neon_unknown_linux_musleabihf=arm-linux-musleabihf-size \
     STRINGS_thumbv7neon_unknown_linux_musleabihf=arm-linux-musleabihf-strings \
     STRIP_thumbv7neon_unknown_linux_musleabihf=arm-linux-musleabihf-strip \
-    BINDGEN_EXTRA_CLANG_ARGS_thumbv7neon_unknown_linux_musleabihf="--sysroot=/usr/arm-linux-musleabihf" \
-    QEMU_LD_PREFIX=/usr/arm-linux-musleabihf \
+    BINDGEN_EXTRA_CLANG_ARGS_thumbv7neon_unknown_linux_musleabihf="--sysroot=$CROSS_MUSL_SYSROOT" \
+    QEMU_LD_PREFIX=$CROSS_MUSL_SYSROOT \
     RUST_TEST_THREADS=1

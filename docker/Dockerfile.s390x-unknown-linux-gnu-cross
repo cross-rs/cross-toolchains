@@ -10,6 +10,7 @@ RUN /cmake.sh
 COPY xargo.sh /
 RUN /xargo.sh
 
+ARG VERBOSE
 COPY crosstool-ng.sh /
 COPY cross-toolchains/docker/crosstool-config/s390x-unknown-linux-gnu-cross.config /
 RUN /crosstool-ng.sh s390x-unknown-linux-gnu-cross.config 5

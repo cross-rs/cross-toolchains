@@ -10,6 +10,7 @@ RUN /cmake.sh
 COPY xargo.sh /
 RUN /xargo.sh
 
+ARG VERBOSE
 COPY crosstool-ng.sh /
 COPY cross-toolchains/docker/crosstool-config/aarch64_be-unknown-linux-gnu-cross.config /
 RUN /crosstool-ng.sh aarch64_be-unknown-linux-gnu-cross.config 5
