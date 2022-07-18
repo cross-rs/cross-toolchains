@@ -48,6 +48,7 @@ The image names don't map identically to the target names, to avoid conflicting 
 | thumbv7neon-unknown-linux-musleabihf  | thumbv7neon-unknown-linux-musleabihf-cross  |
 | x86_64-apple-darwin                   | x86_64-apple-darwin-cross                   |
 | x86_64-pc-windows-msvc                | x86_64-pc-windows-msvc-cross                |
+| x86_64-unknown-linux-gnu              | x86_64-unknown-linux-gnu-sde-cross          |
 
 For example, to build and run an image, you would configure the image with:
 
