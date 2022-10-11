@@ -31,7 +31,7 @@ ENTRYPOINT ["/msvc-windows-entry.sh"]
 ENV CARGO_TARGET_AARCH64_PC_WINDOWS_MSVC_LINKER=link.exe \
     CC_aarch64_pc_windows_msvc=cl.exe \
     CXX_aarch64_pc_windows_msvc=cl.exe \
-    PATH=/opt/msvc/bin/$ARCH:/opt/bin:$PATH \
+    PATH=/opt/msvc/bin/$ARCH:$PATH \
     WINEPATH="$WINEPATH;C:/windows/syswow64;C:/windows/system32;/opt/msvc/bin/$ARCH" \
     VSINSTALLDIR="/opt/msvc" \
     VCINSTALLDIR="/opt/msvc/vc" \
