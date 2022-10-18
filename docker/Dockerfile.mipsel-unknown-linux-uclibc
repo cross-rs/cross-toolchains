@@ -12,7 +12,7 @@ RUN /xargo.sh
 
 ARG VERBOSE
 COPY crosstool-ng.sh /
-COPY crosstool-config/mipsel-unknown-linux-uclibc.config /
+COPY cross-toolchains/docker/crosstool-config/mipsel-unknown-linux-uclibc.config /
 RUN /crosstool-ng.sh mipsel-unknown-linux-uclibc.config 5
 
 ENV PATH /x-tools/mipsel-unknown-linux-uclibc/bin/:$PATH
