@@ -27,11 +27,12 @@ RUN /qemu.sh mipsel
 
 COPY qemu-runner base-runner.sh /
 
+ENV CROSS_SYSROOT=/x-tools/mipsel-unknown-linux-uclibc/mipsel-unknown-linux-uclibc/sysroot/
 ENV CARGO_TARGET_MIPSEL_UNKNOWN_LINUX_UCLIBC_LINKER=mipsel-unknown-linux-uclibc-gcc \
     CARGO_TARGET_MIPSEL_UNKNOWN_LINUX_UCLIBC_RUNNER="/qemu-runner mipsel" \
     CC_mipsel_unknown_linux_uclibc=mipsel-unknown-linux-uclibc-gcc \
     CXX_mipsel_unknown_linux_uclibc=mipsel-unknown-linux-uclibc-g++ \
-    BINDGEN_EXTRA_CLANG_ARGS_mipsel_unknown_linux_uclibc="--sysroot=/usr/mipsel-unknown-linux-uclibc" \
-    QEMU_LD_PREFIX=/usr/mipsel-unknown-linux-uclibc \
+    BINDGEN_EXTRA_CLANG_ARGS_mipsel_unknown_linux_uclibc="--sysroot=$CROSS_SYSROOT" \
+    QEMU_LD_PREFIX="$CROSS_SYSROOT" \
     RUST_TEST_THREADS=1 \
     PKG_CONFIG_PATH="/usr/lib/mipsel-unknown-linux-uclibc/pkgconfig/:${PKG_CONFIG_PATH}"
