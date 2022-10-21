@@ -48,7 +48,6 @@ CT_SAVE_TARBALLS=y
 # CT_TARBALLS_BUILDROOT_LAYOUT is not set
 CT_WORK_DIR="${CT_TOP_DIR}/.build"
 CT_BUILD_TOP_DIR="${CT_WORK_DIR:-${CT_TOP_DIR}/.build}/${CT_HOST:+HOST-${CT_HOST}/}${CT_TARGET}"
-CT_BUILD_DIR="${CT_BUILD_TOP_DIR}/build"
 CT_PREFIX_DIR="/x-tools/${CT_TARGET}"
 CT_RM_RF_PREFIX_DIR=y
 CT_REMOVE_DOCS=y
@@ -243,40 +242,13 @@ CT_LINUX_DIR_NAME="linux"
 CT_LINUX_PKG_NAME="linux"
 CT_LINUX_SRC_RELEASE=y
 CT_LINUX_PATCH_ORDER="global"
-CT_LINUX_V_4_20=y
-# CT_LINUX_V_4_19 is not set
-# CT_LINUX_V_4_18 is not set
-# CT_LINUX_V_4_17 is not set
-# CT_LINUX_V_4_16 is not set
-# CT_LINUX_V_4_15 is not set
-# CT_LINUX_V_4_14 is not set
-# CT_LINUX_V_4_13 is not set
-# CT_LINUX_V_4_12 is not set
-# CT_LINUX_V_4_11 is not set
-# CT_LINUX_V_4_10 is not set
-# CT_LINUX_V_4_9 is not set
-# CT_LINUX_V_4_4 is not set
-# CT_LINUX_V_4_1 is not set
-# CT_LINUX_V_3_16 is not set
-# CT_LINUX_V_3_13 is not set
-# CT_LINUX_V_3_12 is not set
-# CT_LINUX_V_3_10 is not set
-# CT_LINUX_V_3_4 is not set
-# CT_LINUX_V_3_2 is not set
-# CT_LINUX_V_2_6_32 is not set
-# CT_LINUX_NO_VERSIONS is not set
-CT_LINUX_VERSION="4.20.8"
+%CT_LINUX_V%
 CT_LINUX_MIRRORS="$(CT_Mirrors kernel.org linux ${CT_LINUX_VERSION})"
 CT_LINUX_ARCHIVE_FILENAME="@{pkg_name}-@{version}"
 CT_LINUX_ARCHIVE_DIRNAME="@{pkg_name}-@{version}"
 CT_LINUX_ARCHIVE_FORMATS=".tar.xz .tar.gz"
 CT_LINUX_SIGNATURE_FORMAT="unpacked/.sign"
-CT_LINUX_later_than_4_8=y
-CT_LINUX_4_8_or_later=y
-CT_LINUX_later_than_3_7=y
-CT_LINUX_3_7_or_later=y
-CT_LINUX_later_than_3_2=y
-CT_LINUX_3_2_or_later=y
+%CT_LINUX%
 CT_KERNEL_LINUX_VERBOSITY_0=y
 # CT_KERNEL_LINUX_VERBOSITY_1 is not set
 # CT_KERNEL_LINUX_VERBOSITY_2 is not set
@@ -362,35 +334,9 @@ CT_LIBC_UCLIBC_SHOW=y
 #
 CT_LIBC_UCLIBC_PKG_KSYM="UCLIBC"
 CT_UCLIBC_DIR_NAME="uClibc"
-CT_UCLIBC_USE_UCLIBC_NG_ORG=y
-CT_UCLIBC_USE="UCLIBC_NG"
-CT_UCLIBC_NG_PKG_NAME="uClibc-ng"
-CT_UCLIBC_NG_SRC_RELEASE=y
-CT_UCLIBC_NG_PATCH_ORDER="global"
-CT_UCLIBC_NG_V_1_0_31=y
-# CT_UCLIBC_NG_V_1_0_30 is not set
-# CT_UCLIBC_NG_V_1_0_29 is not set
-# CT_UCLIBC_NG_V_1_0_28 is not set
-# CT_UCLIBC_NG_V_1_0_27 is not set
-# CT_UCLIBC_NG_V_1_0_26 is not set
-# CT_UCLIBC_NG_V_1_0_25 is not set
-# CT_UCLIBC_NG_NO_VERSIONS is not set
-CT_UCLIBC_NG_VERSION="1.0.31"
-CT_UCLIBC_NG_MIRRORS="http://downloads.uclibc-ng.org/releases/${CT_UCLIBC_NG_VERSION}"
-CT_UCLIBC_NG_ARCHIVE_FILENAME="@{pkg_name}-@{version}"
-CT_UCLIBC_NG_ARCHIVE_DIRNAME="@{pkg_name}-@{version}"
-CT_UCLIBC_NG_ARCHIVE_FORMATS=".tar.xz .tar.lz .tar.bz2 .tar.gz"
-CT_UCLIBC_NG_SIGNATURE_FORMAT="packed/.asc"
-CT_UCLIBC_later_than_1_0_23=y
-CT_UCLIBC_1_0_23_or_later=y
-CT_UCLIBC_later_than_1_0_21=y
-CT_UCLIBC_1_0_21_or_later=y
-CT_UCLIBC_later_than_1_0_15=y
-CT_UCLIBC_1_0_15_or_later=y
-CT_UCLIBC_later_than_1_0_0=y
-CT_UCLIBC_1_0_0_or_later=y
-CT_UCLIBC_later_than_0_9_33_2=y
-CT_UCLIBC_0_9_33_2_or_later=y
+%CT_UCLIBC_EXTRAS%
+%CT_UCLIBC_V%
+%CT_UCLIBC%
 CT_LIBC_UCLIBC_HAS_LIBICONV=y
 CT_LIBC_UCLIBC_PARALLEL=y
 CT_LIBC_UCLIBC_NG=y
@@ -455,28 +401,13 @@ CT_GCC_USE="GCC"
 CT_GCC_PKG_NAME="gcc"
 CT_GCC_SRC_RELEASE=y
 CT_GCC_PATCH_ORDER="global"
-CT_GCC_V_8=y
-# CT_GCC_V_7 is not set
-# CT_GCC_V_6 is not set
-# CT_GCC_V_5 is not set
-# CT_GCC_V_4_9 is not set
-# CT_GCC_NO_VERSIONS is not set
-CT_GCC_VERSION="8.3.0"
+%CT_GCC_V%
 CT_GCC_MIRRORS="$(CT_Mirrors GNU gcc/gcc-${CT_GCC_VERSION}) $(CT_Mirrors sourceware gcc/releases/gcc-${CT_GCC_VERSION})"
 CT_GCC_ARCHIVE_FILENAME="@{pkg_name}-@{version}"
 CT_GCC_ARCHIVE_DIRNAME="@{pkg_name}-@{version}"
 CT_GCC_ARCHIVE_FORMATS=".tar.xz .tar.gz"
 CT_GCC_SIGNATURE_FORMAT=""
-CT_GCC_later_than_7=y
-CT_GCC_7_or_later=y
-CT_GCC_later_than_6=y
-CT_GCC_6_or_later=y
-CT_GCC_later_than_5=y
-CT_GCC_5_or_later=y
-CT_GCC_later_than_4_9=y
-CT_GCC_4_9_or_later=y
-CT_GCC_later_than_4_8=y
-CT_GCC_4_8_or_later=y
+%CT_GCC%
 CT_CC_GCC_ENABLE_PLUGINS=y
 CT_CC_GCC_HAS_LIBMPX=y
 CT_CC_GCC_ENABLE_CXX_FLAGS=""
@@ -521,7 +452,7 @@ CT_CC_GCC_DEC_FLOAT_AUTO=y
 CT_CC_GCC_HAS_ARCH_OPTIONS=y
 
 #
-# archictecture-specific options
+# architecture-specific options
 #
 CT_CC_GCC_mips_llsc=m
 CT_CC_GCC_mips_synci=m
@@ -650,7 +581,7 @@ CT_ISL_V_0_20=y
 # CT_ISL_V_0_15 is not set
 # CT_ISL_NO_VERSIONS is not set
 CT_ISL_VERSION="0.20"
-CT_ISL_MIRRORS="https://libisl.sourceforge.io"
+CT_ISL_MIRRORS="https://ci-mirrors.rust-lang.org/rustc"
 CT_ISL_ARCHIVE_FILENAME="@{pkg_name}-@{version}"
 CT_ISL_ARCHIVE_DIRNAME="@{pkg_name}-@{version}"
 CT_ISL_ARCHIVE_FORMATS=".tar.xz .tar.bz2 .tar.gz"

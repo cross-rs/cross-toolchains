@@ -12,15 +12,13 @@ RUN /xargo.sh
 
 ARG VERBOSE
 COPY crosstool-ng.sh /
-COPY cross-toolchains/docker/crosstool-config/mipsel-unknown-linux-uclibc.config /
-RUN /crosstool-ng.sh mipsel-unknown-linux-uclibc.config 5
+COPY cross-toolchains/docker/crosstool-config/mipsel-unknown-linux-uclibc-cross.config /
+RUN /crosstool-ng.sh mipsel-unknown-linux-uclibc-cross.config 5
 
 ENV PATH /x-tools/mipsel-unknown-linux-uclibc/bin/:$PATH
 
 COPY deny-debian-packages.sh /
-RUN TARGET_ARCH=mipsel /deny-debian-packages.sh \
-    binutils \
-    binutils-mipsel-linux-gnu
+RUN TARGET_ARCH=mipsel /deny-debian-packages.sh
 
 COPY qemu.sh /
 RUN /qemu.sh mipsel
