@@ -13,4 +13,5 @@ RUN /xargo.sh
 COPY cross-toolchains/docker/intel-sde.sh /
 RUN /intel-sde.sh
 
+ENV CROSS_SYSROOT=/
 ENV CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUNNER="/opt/intel/sde64 -rtm_mode full --"

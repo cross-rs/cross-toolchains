@@ -20,10 +20,11 @@ ENV PATH /x-tools/aarch64_be-unknown-linux-gnu/bin/:$PATH
 COPY qemu.sh /
 RUN /qemu.sh aarch64_be
 
+ENV CROSS_SYSROOT=/x-tools/aarch64_be-unknown-linux-gnu/aarch64_be-unknown-linux-gnu/sysroot/
 ENV CARGO_TARGET_AARCH64_BE_UNKNOWN_LINUX_GNU_LINKER=aarch64_be-unknown-linux-gnu-gcc \
     CARGO_TARGET_AARCH64_BE_UNKNOWN_LINUX_GNU_RUNNER=qemu-aarch64_be \
     CC_aarch64_be_unknown_linux_gnu=aarch64_be-unknown-linux-gnu-gcc \
     CXX_aarch64_be_unknown_linux_gnu=aarch64_be-unknown-linux-gnu-g++ \
-    BINDGEN_EXTRA_CLANG_ARGS_aarch64_be_unknown_linux_gnu="--sysroot=/x-tools/aarch64_be-unknown-linux-gnu/aarch64_be-unknown-linux-gnu/sysroot/" \
-    QEMU_LD_PREFIX=/x-tools/aarch64_be-unknown-linux-gnu/aarch64_be-unknown-linux-gnu/sysroot/ \
+    BINDGEN_EXTRA_CLANG_ARGS_aarch64_be_unknown_linux_gnu="--sysroot=$CROSS_SYSROOT" \
+    QEMU_LD_PREFIX=$CROSS_SYSROOT \
     RUST_TEST_THREADS=1

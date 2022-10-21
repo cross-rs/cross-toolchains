@@ -21,9 +21,9 @@ RUN /musl.sh \
                       --with-mode=thumb \
                       --with-fpu=vfp"
 
-ENV CROSS_MUSL_SYSROOT=/usr/arm-linux-musleabihf
+ENV CROSS_SYSROOT=/usr/arm-linux-musleabihf
 COPY musl-symlink.sh /
-RUN /musl-symlink.sh $CROSS_MUSL_SYSROOT armhf
+RUN /musl-symlink.sh $CROSS_SYSROOT armhf
 
 COPY qemu-runner /
 
@@ -43,6 +43,6 @@ ENV CARGO_TARGET_THUMBV7NEON_UNKNOWN_LINUX_MUSLEABIHF_LINKER=arm-linux-musleabih
     SIZE_thumbv7neon_unknown_linux_musleabihf=arm-linux-musleabihf-size \
     STRINGS_thumbv7neon_unknown_linux_musleabihf=arm-linux-musleabihf-strings \
     STRIP_thumbv7neon_unknown_linux_musleabihf=arm-linux-musleabihf-strip \
-    BINDGEN_EXTRA_CLANG_ARGS_thumbv7neon_unknown_linux_musleabihf="--sysroot=$CROSS_MUSL_SYSROOT" \
-    QEMU_LD_PREFIX=$CROSS_MUSL_SYSROOT \
+    BINDGEN_EXTRA_CLANG_ARGS_thumbv7neon_unknown_linux_musleabihf="--sysroot=$CROSS_SYSROOT" \
+    QEMU_LD_PREFIX=$CROSS_SYSROOT \
     RUST_TEST_THREADS=1
