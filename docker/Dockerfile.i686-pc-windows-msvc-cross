@@ -39,6 +39,7 @@ RUN mkdir -p /usr/lib/binfmt-support/ && \
 COPY cross-toolchains/docker/msvc-windows-entry.sh /
 ENTRYPOINT ["/msvc-windows-entry.sh"]
 
+ENV CROSS_SYSROOT=/opt/msvc/vc/tools/msvc/latest
 ENV CARGO_TARGET_I686_PC_WINDOWS_MSVC_LINKER=link.exe \
     CARGO_TARGET_I686_PC_WINDOWS_MSVC_RUNNER=wine \
     CC_i686_pc_windows_msvc=cl.exe \

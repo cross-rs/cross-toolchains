@@ -28,10 +28,11 @@ RUN /linux-image.sh s390x
 
 COPY linux-runner /
 
+ENV CROSS_SYSROOT=/x-tools/s390x-ibm-linux-gnu/s390x-ibm-linux-gnu/sysroot/
 ENV CARGO_TARGET_S390X_UNKNOWN_LINUX_GNU_LINKER=s390x-ibm-linux-gnu-gcc \
     CARGO_TARGET_S390X_UNKNOWN_LINUX_GNU_RUNNER="/linux-runner s390x" \
     CC_s390x_unknown_linux_gnu=s390x-ibm-linux-gnu-gcc \
     CXX_s390x_unknown_linux_gnu=s390x-ibm-linux-gnu-g++ \
-    BINDGEN_EXTRA_CLANG_ARGS_arm_unknown_linux_gnueabihf="--sysroot=/x-tools/s390x-ibm-linux-gnu/s390x-ibm-linux-gnu/sysroot/" \
-    QEMU_LD_PREFIX=/x-tools/s390x-ibm-linux-gnu/s390x-ibm-linux-gnu/sysroot/ \
+    BINDGEN_EXTRA_CLANG_ARGS_s390x_unknown_linux_gnu="--sysroot=$CROSS_SYSROOT" \
+    QEMU_LD_PREFIX=$CROSS_SYSROOT \
     RUST_TEST_THREADS=1

@@ -28,6 +28,7 @@ RUN /msvc-wine-symlink.sh $ARCH
 COPY cross-toolchains/docker/msvc-windows-entry.sh /
 ENTRYPOINT ["/msvc-windows-entry.sh"]
 
+ENV CROSS_SYSROOT=/opt/msvc/vc/tools/msvc/latest
 ENV CARGO_TARGET_THUMBV7A_PC_WINDOWS_MSVC_LINKER=link.exe \
     CC_thumbv7a_pc_windows_msvc=cl.exe \
     CXX_thumbv7a_pc_windows_msvc=cl.exe \

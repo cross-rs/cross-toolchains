@@ -25,9 +25,13 @@ COPY cross-toolchains/docker/ios.sh /
 COPY cross-toolchains/docker/ios-wrapper.c /
 RUN /ios.sh $CROSS_TARGET $TARGET_CPU
 
+COPY cross-toolchains/docker/ios-symlink.sh /
+RUN /ios-symlink.sh
+
 COPY cross-toolchains/docker/ios-entry.sh /
 ENTRYPOINT ["/ios-entry.sh"]
 
+ENV CROSS_SYSROOT=/opt/cctools/SDK/latest/usr
 ENV PATH=$PATH:/opt/cctools/bin  \
     CARGO_TARGET_AARCH64_APPLE_IOS_LINKER=$CROSS_TARGET-clang \
     AR_aarch64_apple_ios=$CROSS_TARGET-ar \

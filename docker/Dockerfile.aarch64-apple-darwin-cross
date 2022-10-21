@@ -22,6 +22,10 @@ COPY $MACOS_SDK_DIR/$MACOS_SDK_FILE* /
 COPY cross-toolchains/docker/darwin.sh /
 RUN /darwin.sh
 
+COPY cross-toolchains/docker/darwin-symlink.sh /
+RUN /darwin-symlink.sh
+
+ENV CROSS_SYSROOT=/opt/osxcross/SDK/latest/usr
 ENV PATH=$PATH:/opt/osxcross/bin \
     CROSS_TARGET=aarch64-apple-darwin
 
