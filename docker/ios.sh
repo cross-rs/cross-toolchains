@@ -19,7 +19,7 @@ get_sdk_version() {
     local version
     version=$(echo "${1}" | grep -P -o "[0-9][0-9].[0-9]+" | head -1)
     if [ -z "${version}" ]; then
-      version=$(echo "${1}" | grep -P -o "[0-9].[0-9]+" | head -1)
+        version=$(echo "${1}" | grep -P -o "[0-9].[0-9]+" | head -1)
     fi
     if [ -z "${version}" ]; then
         echo "iPhoneOS Version must be in the SDK filename!" 1>&2
