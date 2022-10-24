@@ -3,6 +3,7 @@
 #   https://github.com/tpoechtrager/cctools-port/tree/master/usage_examples/ios_toolchain
 # This code is public domain
 #   https://github.com/tpoechtrager/cctools-port/issues/21#issuecomment-223382676
+# shellcheck disable=SC2012
 
 set -x
 set -eo pipefail
@@ -11,6 +12,7 @@ set -eo pipefail
 . lib.sh
 
 if [[ "${IOS_SDK_FILE}" == "nonexistent" ]] && [[ -z "${IOS_SDK_URL}" ]]; then
+    # shellcheck disable=SC2016
     echo 'Must set the environment variable `IOS_SDK_FILE` or `IOS_SDK_URL`.' 1>&2
     exit 1
 fi
@@ -95,8 +97,6 @@ main() {
     # now, need to get our metadata, and move the SDK to the output dir
     mkdir -p "${install_dir}"
     mv SDK "${sdk_dir}"
-    local syslib
-    syslib=$(find "${sdk_dir}" -name libSystem.dylib -o -name libSystem.tbd | head -n1)
     local wrapper_sdkdir
     pushd "${sdk_dir}"
     wrapper_sdkdir=$(echo iPhoneOS*sdk | head -n1)
@@ -146,6 +146,7 @@ main() {
     ln -sf "${clang}" "${clang}"++
 
     # need a fake wrapper for xcrun, which is used by `cc`.
+    # shellcheck disable=SC2016
     echo '#!/usr/bin/env sh
 echo "${SDKROOT}"
 ' > "${install_dir}/bin/xcrun"
