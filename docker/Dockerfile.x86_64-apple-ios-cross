@@ -33,7 +33,7 @@ ENTRYPOINT ["/ios-entry.sh"]
 
 ENV CROSS_SYSROOT=/opt/cctools/SDK/latest/usr
 ENV PATH=$PATH:/opt/cctools/bin  \
-    CARGO_TARGET_AARCH64_APPLE_IOS_LINKER=$CROSS_TARGET-clang \
+    CARGO_TARGET_X86_64_APPLE_IOS_LINKER=$CROSS_TARGET-clang \
     AR_x86_64_apple_ios=$CROSS_TARGET-ar \
     CC_x86_64_apple_ios=$CROSS_TARGET-clang \
     CXX_x86_64_apple_ios=$CROSS_TARGET-clang++
