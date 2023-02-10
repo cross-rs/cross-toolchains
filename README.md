@@ -103,11 +103,11 @@ $ cargo build-docker-image aarch64-apple-ios-cross \
 If not provided, `IOS_SDK_DIR` defaults to the build context of the Dockerfile. Note that this file must be a subdirectory of the build context.
 
 Supported targets by SDK version (at least 9.3+):
-- `aarch64-apple-ios`: any SDK version
+- `aarch64-apple-ios`: any iPhoneOS SDK version
 - `armv7-apple-ios`: not supported
 - `armv7s-apple-ios`: not supported
 - `i686-apple-ios`: not supported
-- `x86_64-apple-ios`: not supported
+- `x86_64-apple-ios`: any iPhoneSimulator SDK version
 
 ## Known Issues
 

@@ -1,0 +1,39 @@
+FROM ubuntu:20.04
+ARG DEBIAN_FRONTEND=noninteractive
+
+COPY common.sh lib.sh /
+RUN /common.sh
+
+COPY cmake.sh /
+RUN /cmake.sh
+
+COPY xargo.sh /
+RUN /xargo.sh
+
+# `IOS_SDK_URL` or `IOS_SDK_FILE` must be provided. `IOS_SDK_FILE`
+# is the filename, while `IOS_SDK_DIR` is the path relative to the current
+# build context. We will copy the filename from the root directory to
+# osxcross.
+ARG IOS_SDK_DIR="."
+ARG IOS_SDK_FILE="nonexistent"
+ARG IOS_SDK_URL
+ARG TARGET_CPU=x86_64
+ENV CROSS_TARGET=x86_64-apple-ios
+# wildcard workaround so we can copy the file only if it exists
+COPY $IOS_SDK_DIR/$IOS_SDK_FILE /
+COPY cross-toolchains/docker/ios.sh /
+COPY cross-toolchains/docker/ios-wrapper.c /
+RUN /ios.sh $CROSS_TARGET $TARGET_CPU
+
+COPY cross-toolchains/docker/ios-symlink.sh /
+RUN /ios-symlink.sh
+
+COPY cross-toolchains/docker/ios-entry.sh /
+ENTRYPOINT ["/ios-entry.sh"]
+
+ENV CROSS_SYSROOT=/opt/cctools/SDK/latest/usr
+ENV PATH=$PATH:/opt/cctools/bin  \
+    CARGO_TARGET_AARCH64_APPLE_IOS_LINKER=$CROSS_TARGET-clang \
+    AR_x86_64_apple_ios=$CROSS_TARGET-ar \
+    CC_x86_64_apple_ios=$CROSS_TARGET-clang \
+    CXX_x86_64_apple_ios=$CROSS_TARGET-clang++
