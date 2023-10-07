@@ -81,12 +81,23 @@ $ cargo build-docker-image i686-apple-darwin-cross \
   --build-arg 'MACOS_SDK_FILE=$FILE'
 ```
 
-If not provided, `MACOS_SDK_DIR` defaults to the build context of the Dockerfile. Note that this file must be a subdirectory of the build context.
+If not provided, `MACOS_SDK_DIR` defaults to the build context of the Dockerfile. `MACOS_SDK_FILE` *must* be a file within this repository's `docker/` folder. It also *must* keep the name given by osxcross, as version checks otherwise fail. For example:
+
+```bash
+$ mv osxcross/MacOSX11.3.sdk.tar.xz cross-toolchains/docker/MacOSX11.3.sdk.tar.xz
+$ cargo build-docker-image aarc64-apple-darwin \
+  --build-arg 'MACOS_SDK_FILE=MacOSX11.3.sdk.tar.xz'
+# or
+$ mv osxcross/MacOSX11.3.sdk.tar.xz cross-toolchains/docker/some-dir/MacOSX11.3.sdk.tar.xz
+$ cargo build-docker-image aarc64-apple-darwin \
+  --build-arg 'MACOS_SDK_DIR=some-dir' \
+  --build-arg 'MACOS_SDK_FILE=MacOSX11.3.sdk.tar.xz'
+```
 
 Supported targets by SDK version (at least 10.7+):
 - `i686-apple-darwin`: SDK <= 10.13
-- `x86_64-apple-darwin`: any SDK version
-- `aarc64-apple-darwin`: SDK >= 10.16
+- `x86_64-apple-darwin`: SDK <= 13.0 or SDK <= 12.4
+- `aarc64-apple-darwin`: SDK >= 10.16 and (SDK <= 13.0 or SDK <= 12.4)
 
 ### iOS Targets
 
