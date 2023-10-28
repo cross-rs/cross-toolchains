@@ -22,8 +22,8 @@ COPY qemu-runner base-runner.sh /
 COPY toolchain.cmake /opt/toolchain.cmake
 
 ENV CROSS_TARGET_RUNNER="/qemu-runner powerpc"
-ENV CARGO_TARGET_powerpc_UNKNOWN_LINUX_MUSL_LINKER="$CROSS_TOOLCHAIN_PREFIX"gcc \
-    CARGO_TARGET_powerpc_UNKNOWN_LINUX_MUSL_RUNNER="$CROSS_TARGET_RUNNER" \
+ENV CARGO_TARGET_POWERPC_UNKNOWN_LINUX_MUSL_LINKER="$CROSS_TOOLCHAIN_PREFIX"gcc \
+    CARGO_TARGET_POWERPC_UNKNOWN_LINUX_MUSL_RUNNER="$CROSS_TARGET_RUNNER" \
     AR_powerpc_unknown_linux_musl="$CROSS_TOOLCHAIN_PREFIX"ar \
     CC_powerpc_unknown_linux_musl="$CROSS_TOOLCHAIN_PREFIX"gcc \
     CXX_powerpc_unknown_linux_musl="$CROSS_TOOLCHAIN_PREFIX"g++ \
