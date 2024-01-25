@@ -55,9 +55,8 @@ main() {
     local target="${1}"
     local target_cpu="${2}"
     local ldid_commit="4bf8f4d60384a0693dbbe2084ce62a35bfeb87ab"
-    local libdispatch_commit="ee39300b12a77efd3f2f020e009e42d557adbb29"
-    local libtapi_commit="b8c5ac40267aa5f6004dd38cc2b2cd84f2d9d555"
-    local cctools_commit="a98286d858210b209395624477533c0bde05556a"
+    local libtapi_commit="b7b5bdbfda9e8062d405b48da3b811afad98ae76"
+    local cctools_commit="04663295d0425abfac90a42440a7ec02d7155fea"
     local install_dir="/opt/cctools"
     local sdk_dir="${install_dir}"/SDK
 
@@ -73,9 +72,9 @@ main() {
         libxml2-dev \
         zlib1g-dev \
         xz-utils \
-        llvm-dev \
-        uuid-dev \
-        libstdc++-10-dev
+        llvm-dev\
+        uuid-dev\
+        libdispatch0
 
     local td
     td="$(mktemp -d)"
@@ -138,8 +137,6 @@ main() {
     ./configure \
         --prefix="${install_dir}" \
         --with-libtapi="${install_dir}" \
-        --with-libdispatch="${install_dir}" \
-        --with-libblocksruntime="${install_dir}" \
         --target="${target}"
     make -j
     make install
