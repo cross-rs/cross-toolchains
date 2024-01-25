@@ -55,7 +55,7 @@ main() {
     local target="${1}"
     local target_cpu="${2}"
     local ldid_commit="4bf8f4d60384a0693dbbe2084ce62a35bfeb87ab"
-    local libdispatch_commit="ee39300b12a77efd3f2f020e009e42d557adbb29"
+    local libdispatch_commit="a102d19751cfa81f22d1ea5c71c8d1d985a71417"
     local libtapi_commit="b8c5ac40267aa5f6004dd38cc2b2cd84f2d9d555"
     local cctools_commit="a98286d858210b209395624477533c0bde05556a"
     local install_dir="/opt/cctools"
@@ -129,6 +129,15 @@ main() {
     git fetch --depth=1 origin "${libtapi_commit}"
     INSTALLPREFIX="${install_dir}" ./build.sh
     ./install.sh
+    popd
+
+    git clone https://github.com/apple/swift-corelibs-libdispatch.git --depth 1
+    pushd swift-corelibs-libdispatch
+    git fetch --depth=1 origin "${libdispatch_commit}"
+    CC=clang CXX=clang++ cmake \
+	-DCMAKE_BUILD_TYPE=RELEASE \
+	-DCMAKE_INSTALL_PREFIX=${install_dir}
+    make install
     popd
 
     # valid targets include `aarch64-apple-ios`
