@@ -12,7 +12,7 @@ if [[ "${MACOS_SDK_FILE}" == "nonexistent" ]] && [[ -z "${MACOS_SDK_URL}" ]]; th
 fi
 
 main() {
-    local commit=17bb5e2d0a46533c1dd525cf4e9a80d88bd9f00e
+    local commit=ff8d100f3f026b4ffbe4ce96d8aac4ce06f1278b
 
     install_packages curl \
         gcc \
@@ -20,7 +20,7 @@ main() {
         make \
         patch \
         xz-utils \
-        python
+        python3
 
     apt-get update
     apt-get install --assume-yes --no-install-recommends clang \

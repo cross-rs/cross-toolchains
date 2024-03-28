@@ -31,8 +31,3 @@ ENV PATH=$PATH:/opt/osxcross/bin \
 
 COPY cross-toolchains/docker/darwin-entry.sh /
 ENTRYPOINT ["/darwin-entry.sh"]
-
-# by default, older versions of macOS (<10.9) link to libstdc++,
-# but rust expects it to link to libc++.
-ENV CFLAGS_x86_64_apple_darwin="-stdlib=libc++" \
-    CXXFLAGS_x86_64_apple_darwin="-stdlib=libc++"
