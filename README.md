@@ -85,11 +85,11 @@ If not provided, `MACOS_SDK_DIR` defaults to the build context of the Dockerfile
 
 ```bash
 $ mv osxcross/MacOSX11.3.sdk.tar.xz cross-toolchains/docker/MacOSX11.3.sdk.tar.xz
-$ cargo build-docker-image aarch64-apple-darwin \
+$ cargo build-docker-image aarch64-apple-darwin-cross \
   --build-arg 'MACOS_SDK_FILE=MacOSX11.3.sdk.tar.xz'
 # or
 $ mv osxcross/MacOSX11.3.sdk.tar.xz cross-toolchains/docker/some-dir/MacOSX11.3.sdk.tar.xz
-$ cargo build-docker-image aarch64-apple-darwin \
+$ cargo build-docker-image aarch64-apple-darwin-cross \
   --build-arg 'MACOS_SDK_DIR=some-dir' \
   --build-arg 'MACOS_SDK_FILE=MacOSX11.3.sdk.tar.xz'
 ```
