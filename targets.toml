@@ -1,0 +1,109 @@
+# This is similar to cross's `targets.toml`, and it's meant to be both
+# information and used in CI.
+
+[[target]]
+name = "aarch64-apple-darwin-cross"
+target = "aarch64-apple-darwin"
+os = "ubuntu-latest"
+cpp = true
+dylib = true
+std = true
+
+[[target]]
+name = "i686-apple-darwin-cross"
+target = "i686-apple-darwin"
+os = "ubuntu-latest"
+cpp = true
+dylib = true
+std = true
+
+[[target]]
+name = "x86_64-apple-darwin-cross"
+target = "x86_64-apple-darwin"
+os = "ubuntu-latest"
+cpp = true
+dylib = true
+std = true
+
+[[target]]
+name = "aarch64-apple-ios"
+target = "aarch64-apple-ios-cross"
+os = "ubuntu-latest"
+dylib = true
+std = true
+
+[[target]]
+name = "aarch64-pc-windows-msvc-cross"
+target = "aarch64-pc-windows-msvc"
+os = "ubuntu-latest"
+cpp = true
+dylib = true
+std = true
+run = true
+
+[[target]]
+name = "i686-pc-windows-msvc-cross"
+target = "i686-pc-windows-msvc"
+os = "ubuntu-latest"
+cpp = true
+dylib = true
+std = true
+run = true
+
+[[target]]
+name = "thumbv7a-pc-windows-msvc-cross"
+target = "thumbv7a-pc-windows-msvc"
+os = "ubuntu-latest"
+cpp = true
+dylib = true
+std = true
+run = true
+
+[[target]]
+name = "x86_64-pc-windows-msvc-cross"
+target = "x86_64-pc-windows-msvc"
+os = "ubuntu-latest"
+cpp = true
+dylib = true
+std = true
+run = true
+
+[[target]]
+name = "aarch64_be-unknown-linux-gnu-cross"
+target = "aarch64_be-unknown-linux-gnu"
+os = "ubuntu-latest"
+cpp = true
+dylib = true
+std = true
+run = true
+build-std = true
+
+[[target]]
+name = "s390x-unknown-linux-gnu-cross"
+target = "s390x-unknown-linux-gnu"
+os = "ubuntu-latest"
+cpp = true
+dylib = true
+std = true
+run = true
+runners = "qemu-user qemu-system"
+
+[[target]]
+name = "thumbv7neon-unknown-linux-musleabihf-cross"
+target = "thumbv7neon-unknown-linux-musleabihf"
+os = "ubuntu-latest"
+cpp = true
+dylib = true
+std = true
+run = true
+build-std = true
+
+[[target]]
+name = "x86_64-unknown-linux-gnu-sde-cross"
+target = "x86_64-unknown-linux-gnu"
+os = "ubuntu-latest"
+cpp = true
+dylib = true
+std = true
+run = true
+runners = "native"

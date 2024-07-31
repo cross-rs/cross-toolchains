@@ -7,6 +7,7 @@ set -eo pipefail
 . lib.sh
 
 if [[ "${MACOS_SDK_FILE}" == "nonexistent" ]] && [[ -z "${MACOS_SDK_URL}" ]]; then
+    # shellcheck disable=SC2016
     echo 'Must set the environment variable `MACOS_SDK_FILE` or `MACOS_SDK_URL`.' 1>&2
     exit 1
 fi
