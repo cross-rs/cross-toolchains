@@ -11,8 +11,30 @@ if [[ "${MACOS_SDK_FILE}" == "nonexistent" ]] && [[ -z "${MACOS_SDK_URL}" ]]; th
     exit 1
 fi
 
+die() {
+    printf 1>&2 "%s\n" "${@}"
+    exit 1
+}
+
+install_llvm() {
+    [ "${#}" -eq 1 ] || die "No version provided"
+
+    declare -r generated_tmp_dir=$(mktemp -d -t)
+    declare -r llvm_version="${1}"
+
+    pushd "${generated_tmp_dir}"
+
+    curl -LO https://apt.llvm.org/llvm.sh
+    chmod +x llvm.sh
+    ./llvm.sh "${llvm_version}"
+
+    popd
+
+    rm -rf "${generated_tmp_dir}"
+}
+
 main() {
-    local commit=ff8d100f3f026b4ffbe4ce96d8aac4ce06f1278b
+    local commit=83daa9c65fbdcd7a9b867cd198f40b9564d06653
 
     install_packages curl \
         gcc \
@@ -20,10 +42,16 @@ main() {
         make \
         patch \
         xz-utils \
-        python3
+        python3 \
+        lsb-release \
+        software-properties-common \
+        gnupg \
+        bzip2
+    
+    install_llvm 15
 
     apt-get update
-    apt-get install --assume-yes --no-install-recommends clang \
+    apt-get install --assume-yes --no-install-recommends \
         libmpc-dev \
         libmpfr-dev \
         libgmp-dev \

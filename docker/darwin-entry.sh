@@ -23,5 +23,6 @@ declare -x CARGO_TARGET_${upper_suffix}_LINKER="${tools_prefix}"-clang
 # let the clang wrapper to use its own linker in the osxcross bin path.
 declare -x CFLAGS_${envvar_suffix}="-stdlib=libc++ -fuse-ld=${tools_prefix}-ld"
 declare -x CXXFLAGS_${envvar_suffix}="-stdlib=libc++ -fuse-ld=${tools_prefix}-ld"
+declare -rx BINDGEN_EXTRA_CLANG_ARGS_${envvar_suffix}="--sysroot=${CROSS_SYSROOT} -idirafter/usr/include"
 
 exec "$@"
