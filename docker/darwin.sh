@@ -31,6 +31,9 @@ install_llvm() {
     popd
 
     rm -rf "${generated_tmp_dir}"
+
+    ln -s /usr/bin/clang-${llvm_version} /usr/bin/clang 
+    ln -s /usr/bin/clang++-${llvm_version} /usr/bin/clang++
 }
 
 main() {
