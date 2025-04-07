@@ -51,7 +51,7 @@ main() {
         gnupg \
         bzip2
     
-    install_llvm 15
+    install_llvm 16
 
     apt-get update
     apt-get install --assume-yes --no-install-recommends \
