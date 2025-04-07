@@ -32,11 +32,13 @@ install_llvm() {
 
     rm -rf "${generated_tmp_dir}"
 
-    ln -s /usr/bin/clang-${llvm_version} /usr/bin/clang 
+    ln -s /usr/bin/clang-${llvm_version} /usr/bin/clang
     ln -s /usr/bin/clang++-${llvm_version} /usr/bin/clang++
 }
 
 main() {
+    # https://github.com/tpoechtrager/osxcross/commit/83daa9c65fbdcd7a9b867cd198f40b9564d06653
+    # adds support for compiling up to SDK version 15.4
     local commit=83daa9c65fbdcd7a9b867cd198f40b9564d06653
 
     install_packages curl \
@@ -49,8 +51,12 @@ main() {
         lsb-release \
         software-properties-common \
         gnupg \
+        # Need bzip2 for unzipping .bz2 files.
         bzip2
-    
+
+    # The Clang version shipped with the apt package registry for
+    # Ubuntu 20.04 is too old to compile the test files that includes
+    # the macOS SDK. Need to at least bump it up to major version 16.
     install_llvm 16
 
     apt-get update
