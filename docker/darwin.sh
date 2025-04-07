@@ -41,6 +41,10 @@ main() {
     # adds support for compiling up to SDK version 15.4
     local commit=83daa9c65fbdcd7a9b867cd198f40b9564d06653
 
+    # lsb-release: Needed for fetching version of OS in llvm.sh
+    # software-properties-common: Required by llvm.sh
+    # gnupg: Required by llvm.sh
+    # bzip2: Need bzip2 for unzipping .bz2 files.
     install_packages curl \
         gcc \
         g++ \
@@ -51,7 +55,6 @@ main() {
         lsb-release \
         software-properties-common \
         gnupg \
-        # Need bzip2 for unzipping .bz2 files.
         bzip2
 
     # The Clang version shipped with the apt package registry for
