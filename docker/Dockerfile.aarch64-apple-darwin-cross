@@ -28,6 +28,8 @@ RUN /darwin-symlink.sh
 ENV CROSS_SYSROOT=/opt/osxcross/SDK/latest/
 ENV PATH=$PATH:/opt/osxcross/bin \
     CROSS_TARGET=aarch64-apple-darwin
+# Required for bindgen to find the system headers.
+ENV BINDGEN_EXTRA_CLANG_ARGS_aarch64_apple_darwin="--sysroot=$CROSS_SYSROOT -idirafter/usr/include"
 
 COPY cross-toolchains/docker/darwin-entry.sh /
 ENTRYPOINT ["/darwin-entry.sh"]
