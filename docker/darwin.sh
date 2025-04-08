@@ -11,19 +11,59 @@ if [[ "${MACOS_SDK_FILE}" == "nonexistent" ]] && [[ -z "${MACOS_SDK_URL}" ]]; th
     exit 1
 fi
 
-main() {
-    local commit=ff8d100f3f026b4ffbe4ce96d8aac4ce06f1278b
+die() {
+    printf 1>&2 "%s\n" "${@}"
+    exit 1
+}
 
+install_llvm() {
+    [ "${#}" -eq 1 ] || die "No version provided"
+
+    declare -r generated_tmp_dir=$(mktemp -d -t)
+    declare -r llvm_version="${1}"
+
+    pushd "${generated_tmp_dir}"
+
+    curl -LO https://apt.llvm.org/llvm.sh
+    chmod +x llvm.sh
+    ./llvm.sh "${llvm_version}"
+
+    popd
+
+    rm -rf "${generated_tmp_dir}"
+
+    ln -s /usr/bin/clang-${llvm_version} /usr/bin/clang
+    ln -s /usr/bin/clang++-${llvm_version} /usr/bin/clang++
+}
+
+main() {
+    # https://github.com/tpoechtrager/osxcross/commit/83daa9c65fbdcd7a9b867cd198f40b9564d06653
+    # adds support for compiling up to SDK version 15.4
+    local commit=83daa9c65fbdcd7a9b867cd198f40b9564d06653
+
+    # lsb-release: Needed for fetching version of OS in llvm.sh
+    # software-properties-common: Required by llvm.sh
+    # gnupg: Required by llvm.sh
+    # bzip2: Need bzip2 for unzipping .bz2 files.
     install_packages curl \
         gcc \
         g++ \
         make \
         patch \
         xz-utils \
-        python3
+        python3 \
+        lsb-release \
+        software-properties-common \
+        gnupg \
+        bzip2
+
+    # The Clang version shipped with the apt package registry for
+    # Ubuntu 20.04 is too old to compile the test files that includes
+    # the macOS SDK. Need to at least bump it up to major version 16.
+    install_llvm 16
 
     apt-get update
-    apt-get install --assume-yes --no-install-recommends clang \
+    apt-get install --assume-yes --no-install-recommends \
         libmpc-dev \
         libmpfr-dev \
         libgmp-dev \
