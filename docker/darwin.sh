@@ -37,9 +37,9 @@ install_llvm() {
 }
 
 main() {
-    # https://github.com/tpoechtrager/osxcross/commit/83daa9c65fbdcd7a9b867cd198f40b9564d06653
-    # adds support for compiling up to SDK version 15.4
-    local commit=83daa9c65fbdcd7a9b867cd198f40b9564d06653
+    # http://github.com/tpoechtrager/osxcross/commit/aa4c5eac89df6ccaf2e28fbc6332ab6893047c3b
+    # adds support for compiling up to SDK version 26
+    local commit=aa4c5eac89df6ccaf2e28fbc6332ab6893047c3b
 
     # lsb-release: Needed for fetching version of OS in llvm.sh
     # software-properties-common: Required by llvm.sh
