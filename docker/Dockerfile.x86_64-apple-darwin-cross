@@ -7,9 +7,6 @@ RUN /common.sh
 COPY cmake.sh /
 RUN /cmake.sh
 
-COPY xargo.sh /
-RUN /xargo.sh
-
 # `MACOS_SDK_URL` or `MACOS_SDK_FILE` must be provided. `MACOS_SDK_FILE`
 # is the filename, while `MACOS_SDK_DIR` is the path relative to the current
 # build context. We will copy the filename from the root directory to
