@@ -33,4 +33,5 @@ ENV CARGO_TARGET_AARCH64_PC_WINDOWS_MSVC_LINKER=link.exe \
     WINEPATH="$WINEPATH;C:/windows/syswow64;C:/windows/system32;/opt/msvc/bin/$ARCH" \
     VSINSTALLDIR="/opt/msvc" \
     VCINSTALLDIR="/opt/msvc/vc" \
-    VSCMD_ARG_TGT_ARCH=$ARCH
+    VSCMD_ARG_TGT_ARCH=$ARCH \
+    BINDGEN_EXTRA_CLANG_ARGS="-I$CROSS_SYSROOT/include/"
