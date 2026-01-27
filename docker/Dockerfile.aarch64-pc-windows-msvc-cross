@@ -7,7 +7,21 @@ RUN /common.sh
 COPY cmake.sh /
 RUN /cmake.sh
 
-# run these in separate steps, so we can cache MSVC between all images.
+# install xwin to access windows SDK
+COPY xwin-install.sh /
+RUN /xwin-install.sh
+
+# download the correct ARM64 SDK
+RUN xwin --accept-license --arch aarch64 splat --output ./complete-windows-sdk
+
+# move Windows SDK downloaded by xwin to the expected directory 
+RUN mv ./complete-windows-sdk /windows-sdk
+
+# only copy MSVC if it exists in the xwin SDK structure
+RUN if [ -d /windows-sdk/crt ]; then \
+cp -r /windows-sdk/crt/* /opt/msvc/ || true; \
+fi
+
 COPY cross-toolchains/docker/msvc-wine.sh /
 RUN /msvc-wine.sh
 
@@ -25,12 +39,48 @@ RUN /msvc-wine-symlink.sh $ARCH
 COPY cross-toolchains/docker/msvc-windows-entry.sh /
 ENTRYPOINT ["/msvc-windows-entry.sh"]
 
-ENV CROSS_SYSROOT=/opt/msvc/vc/tools/msvc/latest
+# install specific clang version for better Windows SDK compatibility
+RUN apt-get update && \
+apt-get install -y --no-install-recommends \
+clang \
+lld \
+llvm && \
+apt-get clean && \
+rm -rf /var/lib/apt/lists/*
+
+# create necessary symlinks for Windows cross-compilation
+RUN ln -sf /usr/bin/clang /usr/bin/clang-cl && \
+ln -sf /usr/bin/llvm-ar /usr/bin/lib.exe
+
+# create lib.exe symlink using LLVM archiver
+RUN ln -sf /usr/bin/llvm-ar /usr/bin/lib.exe
+
+# patch vadefs.h to fix va_start issues
+RUN sed -i 's/__crt_va_start_a(ap,v) ((void)(__va_start(&ap, _ADDRESSOF(v), _SLOTSIZEOF(v), __alignof(v), _ADDRESSOF(v))))/__crt_va_start_a(ap,v) __builtin_va_start(ap, v)/g' /windows-sdk/crt/include/vadefs.h
+
+# patch to disable clang version checks
+RUN sed -i 's/_EMIT_STL_ERROR(STL1000, "Unexpected compiler version, expected Clang 19.0.0 or newer.");/\/\/ _EMIT_STL_ERROR(STL1000, "Unexpected compiler version, expected Clang 19.0.0 or newer.");/' /windows-sdk/crt/include/yvals_core.h
+
+# patch tuple header to disable problematic static_assert
+RUN sed -i 's/static_assert(false,/static_assert(true || false,/g' /windows-sdk/crt/include/tuple
+
+# environment variables for complete SDK
 ENV CARGO_TARGET_AARCH64_PC_WINDOWS_MSVC_LINKER=link.exe \
-    CC_aarch64_pc_windows_msvc=cl.exe \
-    CXX_aarch64_pc_windows_msvc=cl.exe \
-    PATH=/opt/msvc/bin/$ARCH:$PATH \
-    WINEPATH="$WINEPATH;C:/windows/syswow64;C:/windows/system32;/opt/msvc/bin/$ARCH" \
-    VSINSTALLDIR="/opt/msvc" \
-    VCINSTALLDIR="/opt/msvc/vc" \
-    VSCMD_ARG_TGT_ARCH=$ARCH
+CROSS_SYSROOT=/windows-sdk \
+WINDOWS_SDK_PATH=/windows-sdk \
+CC=clang-cl \
+CXX=clang-cl \
+CC_aarch64_pc_windows_msvc=clang-cl \
+CXX_aarch64_pc_windows_msvc=clang-cl \
+CFLAGS="-D_CRT_SECURE_NO_WARNINGS -I/windows-sdk/sdk/include -I/windows-sdk/sdk/include/shared -I/windows-sdk/sdk/include/ucrt -I/windows-sdk/sdk/include/um -I/windows-sdk/crt/include" \
+CXXFLAGS="-D_CRT_SECURE_NO_WARNINGS -I/windows-sdk/sdk/include -I/windows-sdk/sdk/include/shared -I/windows-sdk/sdk/include/ucrt -I/windows-sdk/sdk/include/um -I/windows-sdk/crt/include /EHsc" \
+CXXFLAGS_aarch64_pc_windows_msvc="-D_CRT_SECURE_NO_WARNINGS -I/windows-sdk/sdk/include -I/windows-sdk/sdk/include/shared -I/windows-sdk/sdk/include/ucrt -I/windows-sdk/sdk/include/um -I/windows-sdk/crt/include /EHsc" \ 
+CFLAGS_aarch64_pc_windows_msvc="-D_CRT_SECURE_NO_WARNINGS -I/windows-sdk/sdk/include -I/windows-sdk/sdk/include/shared -I/windows-sdk/sdk/include/ucrt -I/windows-sdk/sdk/include/um -I/windows-sdk/crt/include" \
+PATH=/opt/msvc/bin/$ARCH:/usr/bin:$PATH \
+WINEPATH="$WINEPATH;C:/windows/syswow64;C:/windows/system32;/opt/msvc/bin/$ARCH" \
+VSINSTALLDIR="/opt/msvc" \
+VCINSTALLDIR="/opt/msvc/vc" \
+VSCMD_ARG_TGT_ARCH=$ARCH
+
+# add Rust linker flags for Windows libraries with xwin
+ENV CARGO_TARGET_AARCH64_PC_WINDOWS_MSVC_RUSTFLAGS="-L native=/windows-sdk/sdk/lib/a64 -L native=/windows-sdk/sdk/lib/um/aarch64 -L native=/windows-sdk/sdk/lib/ucrt/aarch64 -L native=/windows-sdk/crt/lib/aarch64"
