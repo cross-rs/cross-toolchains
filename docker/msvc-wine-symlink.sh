@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# shellcheck disable=SC2016
+# shellcheck disable=SC2012,SC2016
 
 set -x
 set -euo pipefail
@@ -19,7 +19,7 @@ main() {
 
     # create a symlink to our sysroot to make it accessible in the dockerfile
     local msvc_version
-    msvc_version=$(ls /opt/msvc/vc/tools/msvc/)
+    msvc_version=$(ls -t -1 /opt/msvc/vc/tools/msvc/ | head -1)
     ln -s "/opt/msvc/vc/tools/msvc/${msvc_version}" "/opt/msvc/vc/tools/msvc/latest"
 
     rm "${0}"

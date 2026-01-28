@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# shellcheck disable=SC2016
+# shellcheck disable=SC2012,SC2016
 
 set -x
 set -euo pipefail
@@ -7,7 +7,7 @@ set -euo pipefail
 main() {
     # create a symlink to our sysroot to make it accessible in the dockerfile
     local sdk_version
-    sdk_version=$(ls /opt/cctools/SDK)
+    sdk_version=$(ls -t -1 /opt/cctools/SDK | head -1)
     ln -s "/opt/cctools/SDK/${sdk_version}" "/opt/cctools/SDK/latest"
 
     rm "${0}"
